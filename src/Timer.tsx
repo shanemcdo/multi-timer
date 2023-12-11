@@ -76,12 +76,16 @@ export default function Timer(props: TimerObject) {
                 </>
             }
         >
-            <svg viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
-                <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle())*48} ${48-Math.cos(angle())*48}`} />
-            </svg>
-            <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
-            <button onClick={stopTimer}>Stop Timer</button>
+            <div class="parent">
+                <svg class="child" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
+                    <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
+                </svg>
+                <div class="child">
+                    <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
+                    <button onClick={stopTimer}>Stop Timer</button>
+                </div>
+            </div>
         </Show>
     </div>
 }

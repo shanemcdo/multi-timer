@@ -1,3 +1,13 @@
 svg {
     width: 60%;
 }
+
+.parent {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.child {
+    grid-area: 1 / 1 / 2 / 2;
+}
