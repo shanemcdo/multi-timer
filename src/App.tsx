@@ -5,9 +5,9 @@ import NewButton from './NewButton'
 import './App.css'
 
 function App() {
-  const [timers, setTimers] = createStore<string[]>([])
+  const [timers, _setTimers] = createStore<string[]>([])
   return (<>
-    <For each={timers}>{(timer, i) => 
+    <For each={timers}>{(timer, _i) => 
       <Timer name={timer} />
     }</For>
     <NewButton callback={() => {}} />
