@@ -20,9 +20,9 @@ export default function Timer(props: TimerObject) {
         onKeyPress: validateNumberInput,
         onChange: validateNumberInput,
     }
-    const hours = <input class="hours" {...commonInputProps} max="" />
-    const minutes = <input class="minutes" {...commonInputProps} value="5" />
-    const seconds = <input class="seconds" {...commonInputProps} />
+    const hours = <input class="hours" {...commonInputProps} max="" /> as HTMLInputElement
+    const minutes = <input class="minutes" {...commonInputProps} value="5" /> as HTMLInputElement
+    const seconds = <input class="seconds" {...commonInputProps} /> as HTMLInputElement
     const [time, setTime] = createSignal<{h: number, m: number, s: number}>({h: 0, m: 0, s: 0})
     const startTimer = () => {
         setActive(true)
@@ -63,7 +63,7 @@ export default function Timer(props: TimerObject) {
                 </>
             }
         >
-            <p>{time().h} {time().m} {time().s}</p>
+            <p class="digital clock">{time().h}:{time().m}:{time().s}</p>
             <button onClick={stopTimer}>Stop Timer</button>
         </Show>
     </div>

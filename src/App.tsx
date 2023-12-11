@@ -1,4 +1,4 @@
-import { For, createSignal, Signal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
 import { TimerObject } from './TimerObject'
 import Timer from './Timer'
