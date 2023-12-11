@@ -78,15 +78,15 @@ export default function Timer(props: TimerObject) {
                 <>
                 <div class="time-fields">
                     <div class="time-field-container">
-                        <label htmlFor="hours">Hrs</label>
+                        <label>Hrs</label>
                         {hours}
                     </div>
                     <div class="time-field-container">
-                        <label htmlFor="minutes">Mins</label>
+                        <label>Mins</label>
                         {minutes}
                     </div>
                     <div class="time-field-container">
-                        <label htmlFor="seconds">Secs</label>
+                        <label>Secs</label>
                         {seconds}
                     </div>
                 </div>
