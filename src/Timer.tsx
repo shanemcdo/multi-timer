@@ -1,6 +1,14 @@
 import { Show, createSignal } from 'solid-js'
 import { TimerObject } from './TimerObject';
 
+function pad(value: number, size: number): string {
+    let result = value.toString()
+    while(result.length < size) {
+        result = '0' + result
+    }
+    return result
+}
+
 function validateNumberInput(this: HTMLInputElement) {
     const val = parseInt(this.value)
     const min = parseInt(this.min)
@@ -63,7 +71,7 @@ export default function Timer(props: TimerObject) {
                 </>
             }
         >
-            <p class="digital clock">{time().h}:{time().m}:{time().s}</p>
+            <p class="digital clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
             <button onClick={stopTimer}>Stop Timer</button>
         </Show>
     </div>
