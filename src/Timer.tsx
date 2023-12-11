@@ -31,6 +31,7 @@ export default function Timer(props: TimerObject) {
         value: '0',
         type: 'number',
         onKeyPress: validateNumberInput,
+        onKeyUp: validateNumberInput,
         onChange: validateNumberInput,
     }
     const hours = <input class="hours" {...commonInputProps} max="" /> as HTMLInputElement
