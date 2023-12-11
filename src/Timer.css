@@ -1,13 +1,60 @@
-svg {
+.timer {
+    --border-radius: 0.4rem;
+}
+
+.timer svg {
     width: 60%;
 }
 
-.parent {
+.timer .parent {
     display: grid;
     align-items: center;
     justify-items: center;
 }
 
-.child {
+.timer .child {
     grid-area: 1 / 1 / 2 / 2;
+}
+
+.timer input {
+    appearance: none;
+    border: none;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.timer input:focus {
+    outline: none;
+}
+
+.timer input,
+.timer button {
+    font-size: 1.2rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.timer button {
+    margin: 0.3rem;
+}
+
+.timer .name {
+    border-radius: var(--border-radius);
+}
+
+.timer .time-field-container {
+    font-size: 0.7rem;
+    display:flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.timer .time-fields {
+    display: flex;
+}
+
+.timer .time-fields :first-child input {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.timer .time-fields :last-child input {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }

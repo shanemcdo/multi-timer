@@ -11,6 +11,10 @@ function pad(value: number, size: number): string {
 }
 
 function validateNumberInput(this: HTMLInputElement) {
+    if(this.value === '') {
+        this.value = '0'
+        return
+    }
     const val = parseInt(this.value)
     const min = parseInt(this.min)
     const max = parseInt(this.max)
@@ -32,22 +36,22 @@ export default function Timer(props: TimerObject) {
     const hours = <input class="hours" {...commonInputProps} max="" /> as HTMLInputElement
     const minutes = <input class="minutes" {...commonInputProps} value="5" /> as HTMLInputElement
     const seconds = <input class="seconds" {...commonInputProps} /> as HTMLInputElement
-    const [time, setTime] = createSignal<{h: number, m: number, s: number}>({h: 0, m: 0, s: 0})
+    const [time, setTime] = createSignal<{ h: number, m: number, s: number }>({ h: 0, m: 0, s: 0 })
     const [fractionComplete, setFractionComplete] = createSignal(0)
     const angle = () => fractionComplete() * Math.PI * 2
-    const largeArcFlag = () => fractionComplete() < 0.5 ? '1': '0'
+    const largeArcFlag = () => fractionComplete() < 0.5 ? '1' : '0'
     const startTimer = () => {
         setActive(true)
         const h = parseInt(hours!.value) * 60 * 60 * 1000;
         const m = parseInt(minutes!.value) * 60 * 1000;
         const s = parseInt(seconds!.value) * 1000;
-        const totalMs  = h + m + s;
+        const totalMs = h + m + s;
         const start = Date.now();
         intervalId = setInterval(() => {
             const now = Date.now()
             const diff = (start + totalMs) - now
             setFractionComplete(diff / totalMs);
-            if(diff <= 0) {
+            if (diff <= 0) {
                 stopTimer();
             }
             setTime({
@@ -59,33 +63,47 @@ export default function Timer(props: TimerObject) {
     }
     const stopTimer = () => {
         setActive(false)
-        if(intervalId !== null) clearInterval(intervalId)
+        if (intervalId !== null) clearInterval(intervalId)
     }
-    return <div>
-        <input type="text" value={props.name()} onChange={event => props.setName(event.target.value)} />
-        <button onClick={props.remove}>X</button>
+    return <div class="timer">
+        <input type="text" class="name" value={props.name()} onChange={event => props.setName(event.target.value)} />
+        <button class="remove-button" onClick={() => {
+            stopTimer()
+            props.remove()
+        }}>X</button>
         <br />
-        <Show 
+        <Show
             when={active()}
             fallback={
                 <>
-                    {hours}
-                    {minutes}
-                    {seconds}
-                    <button onClick={startTimer}>Start Timer</button>
+                <div class="time-fields">
+                    <div class="time-field-container">
+                        <label htmlFor="hours">Hrs</label>
+                        {hours}
+                    </div>
+                    <div class="time-field-container">
+                        <label htmlFor="minutes">Mins</label>
+                        {minutes}
+                    </div>
+                    <div class="time-field-container">
+                        <label htmlFor="seconds">Secs</label>
+                        {seconds}
+                    </div>
+                </div>
+                <button onClick={startTimer}>Start Timer</button>
                 </>
             }
         >
-            <div class="parent">
-                <svg class="child" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
-                    <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
-                </svg>
-                <div class="child">
-                    <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
-                    <button onClick={stopTimer}>Stop Timer</button>
-                </div>
+        <div class="parent">
+            <svg class="child" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
+                <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
+            </svg>
+            <div class="child">
+                <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
+                <button onClick={stopTimer}>Stop Timer</button>
             </div>
-        </Show>
-    </div>
+        </div>
+    </Show>
+    </div >
 }
