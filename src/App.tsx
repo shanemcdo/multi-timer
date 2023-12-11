@@ -7,21 +7,23 @@ import './App.css'
 function App() {
   const [timers, setTimers] = createStore<TimerObject[]>([])
   let timerCount = 0;
+  const addTimer = () => {
+    const id = ++timerCount
+    const [name, setName] = createSignal(`Timer ${id}`)
+    setTimers(produce(list => list.push({
+      id,
+      name,
+      setName,
+      remove: () => setTimers(timers.filter(x => x.id !== id))
+    })))
+  }
+  addTimer()
   return (
     <div class='grid'>
       <For each={timers}>{(timer, _i) =>
         <Timer {...timer} />
       }</For>
-      <button onClick={() => {
-        const id = ++timerCount
-        const [name, setName] = createSignal(`Timer ${id}`)
-        setTimers(produce(list => list.push({
-          id,
-          name,
-          setName,
-          remove: () => setTimers(timers.filter(x => x.id !== id))
-        })))
-      }}>+</button>
+      <button onClick={addTimer}>+</button>
     </div>
   )
 }
