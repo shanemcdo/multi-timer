@@ -1,5 +1,6 @@
 import { Show, createSignal } from 'solid-js'
 import { TimerObject } from './TimerObject';
+import './Timer.css'
 
 function pad(value: number, size: number): string {
     let result = value.toString()
@@ -32,6 +33,9 @@ export default function Timer(props: TimerObject) {
     const minutes = <input class="minutes" {...commonInputProps} value="5" /> as HTMLInputElement
     const seconds = <input class="seconds" {...commonInputProps} /> as HTMLInputElement
     const [time, setTime] = createSignal<{h: number, m: number, s: number}>({h: 0, m: 0, s: 0})
+    const [fractionComplete, setFractionComplete] = createSignal(0)
+    const angle = () => fractionComplete() * Math.PI * 2
+    const largeArcFlag = () => fractionComplete() < 0.5 ? '1': '0'
     const startTimer = () => {
         setActive(true)
         const h = parseInt(hours!.value) * 60 * 60 * 1000;
@@ -42,6 +46,7 @@ export default function Timer(props: TimerObject) {
         intervalId = setInterval(() => {
             const now = Date.now()
             const diff = (start + totalMs) - now
+            setFractionComplete(diff / totalMs);
             if(diff <= 0) {
                 stopTimer();
             }
@@ -71,7 +76,11 @@ export default function Timer(props: TimerObject) {
                 </>
             }
         >
-            <p class="digital clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
+            <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
+                <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle())*48} ${48-Math.cos(angle())*48}`} />
+            </svg>
+            <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
             <button onClick={stopTimer}>Stop Timer</button>
         </Show>
     </div>
