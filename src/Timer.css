@@ -20,6 +20,7 @@
     appearance: none;
     border: none;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    border-radius: var(--border-radius);
 }
 
 .timer input:focus {
@@ -36,10 +37,6 @@
     margin: 0.3rem;
 }
 
-.timer .name {
-    border-radius: var(--border-radius);
-}
-
 .timer .time-field-container {
     font-size: 0.7rem;
     display:flex;
@@ -49,6 +46,11 @@
 
 .timer .time-fields {
     display: flex;
+}
+
+/* Middle fields */
+.timer .time-fields :not(:first-child):not(:last-child) input {
+    border-radius: 0;
 }
 
 .timer .time-fields :first-child input {
