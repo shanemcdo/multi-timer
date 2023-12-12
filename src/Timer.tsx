@@ -1,6 +1,12 @@
-import { Show, createSignal } from 'solid-js'
+import { Switch, Match, createSignal } from 'solid-js'
 import { TimerObject } from './TimerObject';
 import './Timer.css'
+
+enum TimerState {
+    NotStarted,
+    Running,
+    Complete
+}
 
 function pad(value: number, size: number): string {
     let result = value.toString()
@@ -27,7 +33,6 @@ function validateNumberInput(this: HTMLInputElement) {
 
 export default function Timer(props: TimerObject) {
     let intervalId: number | null = null;
-    const [active, setActive] = createSignal(false)
     const commonInputProps = {
         min: '0',
         max: '59',
@@ -40,12 +45,13 @@ export default function Timer(props: TimerObject) {
     const hours = <input class="hours" {...commonInputProps} max="" /> as HTMLInputElement
     const minutes = <input class="minutes" {...commonInputProps} value="5" /> as HTMLInputElement
     const seconds = <input class="seconds" {...commonInputProps} /> as HTMLInputElement
+    const [state, setState] = createSignal(TimerState.NotStarted)
     const [time, setTime] = createSignal<{ h: number, m: number, s: number }>({ h: 0, m: 0, s: 0 })
     const [fractionComplete, setFractionComplete] = createSignal(0)
     const angle = () => fractionComplete() * Math.PI * 2
     const largeArcFlag = () => fractionComplete() < 0.5 ? '1' : '0'
     const startTimer = () => {
-        setActive(true)
+        setState(TimerState.Running)
         const h = parseInt(hours!.value) * 60 * 60 * 1000;
         const m = parseInt(minutes!.value) * 60 * 1000;
         const s = parseInt(seconds!.value) * 1000;
@@ -65,8 +71,8 @@ export default function Timer(props: TimerObject) {
             })
         }, 50)
     }
-    const stopTimer = () => {
-        setActive(false)
+    const stopTimer = (state = TimerState.Complete) => {
+        setState(state)
         if (intervalId !== null) clearInterval(intervalId)
     }
     return <div class="timer">
@@ -75,11 +81,8 @@ export default function Timer(props: TimerObject) {
             stopTimer()
             props.remove()
         }}>X</button>
-        <br />
-        <Show
-            when={active()}
-            fallback={
-                <>
+        <Switch>
+            <Match when={state() == TimerState.NotStarted}>
                 <div class="time-fields">
                     <div class="time-field-container">
                         <label>Hrs</label>
@@ -95,19 +98,23 @@ export default function Timer(props: TimerObject) {
                     </div>
                 </div>
                 <button onClick={startTimer}>Start Timer</button>
-                </>
-            }
-        >
-        <div class="parent">
-            <svg class="child" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
-                <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
-            </svg>
-            <div class="child">
-                <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
-                <button onClick={stopTimer}>Stop Timer</button>
-            </div>
-        </div>
-    </Show>
+            </Match>
+            <Match when={state() == TimerState.Running}>
+                <div class="parent">
+                    <svg class="child" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
+                        <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
+                    </svg>
+                    <div class="child">
+                        <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
+                        <button onClick={[stopTimer, TimerState.NotStarted]}>Stop Timer</button>
+                    </div>
+                </div>
+            </Match>
+            <Match when={state() == TimerState.Complete}>
+                <p>Completed!</p>
+                <button onClick={[setState, TimerState.NotStarted]}>OK</button>
+            </Match>
+        </Switch>
     </div >
 }
