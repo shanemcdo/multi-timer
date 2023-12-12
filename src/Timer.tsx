@@ -49,7 +49,7 @@ export default function Timer(props: TimerObject) {
     const [time, setTime] = createSignal<{ h: number, m: number, s: number }>({ h: 0, m: 0, s: 0 })
     const [fractionComplete, setFractionComplete] = createSignal(0)
     const angle = () => fractionComplete() * Math.PI * 2
-    const largeArcFlag = () => fractionComplete() < 0.5 ? '1' : '0'
+    const largeArcFlag = () => fractionComplete() > 0.5 ? '1' : '0'
     const startTimer = () => {
         setState(TimerState.Running)
         const h = parseInt(hours!.value) * 60 * 60 * 1000;
@@ -60,7 +60,7 @@ export default function Timer(props: TimerObject) {
         intervalId = setInterval(() => {
             const now = Date.now()
             const diff = (start + totalMs) - now
-            setFractionComplete(diff / totalMs);
+            setFractionComplete((totalMs - diff) / totalMs);
             if (diff <= 0) {
                 stopTimer();
             }
@@ -103,7 +103,7 @@ export default function Timer(props: TimerObject) {
                 <div class="parent">
                     <svg class="child" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="48" fill="none" stroke="gray" stroke-width="4" />
-                        <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${-Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
+                        <path fill="none" stroke="green" stroke-width="4" d={`M50 2 a 48 48 0 ${largeArcFlag()} 1 ${Math.sin(angle()) * 48} ${48 - Math.cos(angle()) * 48}`} />
                     </svg>
                     <div class="child">
                         <p class="digital-clock">{time().h}:{pad(time().m, 2)}:{pad(time().s, 2)}</p>
