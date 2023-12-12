@@ -11,6 +11,9 @@ function pad(value: number, size: number): string {
 }
 
 function validateNumberInput(this: HTMLInputElement) {
+    while(this.value.startsWith('0')) {
+        this.value = this.value.substring(1)
+    }
     if(this.value === '') {
         this.value = '0'
         return
