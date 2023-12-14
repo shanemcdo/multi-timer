@@ -1,6 +1,6 @@
 import { Switch, Match, createSignal } from 'solid-js'
 import { TimerObject } from './TimerObject';
-import './Timer.css'
+import './Timer.scss'
 
 enum TimerState {
     NotStarted,
