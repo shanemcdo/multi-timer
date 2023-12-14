@@ -6,7 +6,7 @@ import './App.css'
 
 function App() {
   const [timers, setTimers] = createStore<TimerObject[]>([])
-  let timerCount = 0;
+  let timerCount = 0
   const addTimer = () => {
     const id = ++timerCount
     const [name, setName] = createSignal(`Timer ${id}`)

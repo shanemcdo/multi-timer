@@ -1,5 +1,5 @@
 import { Switch, Match, createSignal } from 'solid-js'
-import { TimerObject } from './TimerObject';
+import { TimerObject } from './TimerObject'
 import './Timer.scss'
 
 enum TimerState {
@@ -32,7 +32,7 @@ function validateNumberInput(this: HTMLInputElement) {
 }
 
 export default function Timer(props: TimerObject) {
-    let intervalId: number | null = null;
+    let intervalId: number | null = null
     const commonInputProps = {
         min: '0',
         max: '59',
@@ -52,17 +52,17 @@ export default function Timer(props: TimerObject) {
     const largeArcFlag = () => fractionComplete() > 0.5 ? '1' : '0'
     const startTimer = () => {
         setState(TimerState.Running)
-        const h = parseInt(hours!.value) * 60 * 60 * 1000;
-        const m = parseInt(minutes!.value) * 60 * 1000;
-        const s = parseInt(seconds!.value) * 1000;
-        const totalMs = h + m + s;
-        const start = Date.now();
+        const h = parseInt(hours!.value) * 60 * 60 * 1000
+        const m = parseInt(minutes!.value) * 60 * 1000
+        const s = parseInt(seconds!.value) * 1000
+        const totalMs = h + m + s
+        const start = Date.now()
         intervalId = setInterval(() => {
             const now = Date.now()
             const diff = (start + totalMs) - now
-            setFractionComplete((totalMs - diff) / totalMs);
+            setFractionComplete((totalMs - diff) / totalMs)
             if (diff <= 0) {
-                stopTimer();
+                stopTimer()
             }
             setTime({
                 h: Math.floor(diff / 60 / 60 / 1000),
