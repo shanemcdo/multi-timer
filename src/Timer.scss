@@ -48,15 +48,17 @@
     }
 
     /* Middle fields */
-    .time-fields :not(:first-child):not(:last-child) input {
-        border-radius: 0;
-    }
+    .time-fields {
+        :not(:first-child):not(:last-child) input {
+            border-radius: 0;
+        }
 
-    .time-fields :first-child input {
-        border-radius: $border-radius 0 0 $border-radius;
-    }
+        :first-child input {
+            border-radius: $border-radius 0 0 $border-radius;
+        }
 
-    .time-fields :last-child input {
-        border-radius: 0 $border-radius $border-radius 0;
+        :last-child input {
+            border-radius: 0 $border-radius $border-radius 0;
+        }
     }
 }
