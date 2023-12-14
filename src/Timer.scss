@@ -20,10 +20,10 @@
         border: none;
         font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
         border-radius: $border-radius;
-    }
 
-    input:focus {
-        outline: none;
+        &:focus {
+            outline: none;
+        }
     }
 
     input,
@@ -45,10 +45,8 @@
 
     .time-fields {
         display: flex;
-    }
 
-    /* Middle fields */
-    .time-fields {
+        /* Middle fields */
         :not(:first-child):not(:last-child) input {
             border-radius: 0;
         }
